@@ -358,10 +358,64 @@ write_csv(df_2018_2019_merged, file = "jlarc_2018_2019_merged.csv", col_names = 
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+colnames(df_2020_tiny)
 
+df_2020_ready_to_merge <- df_2020_tiny %>%
+  rename(
+    agency_name = agency.name,
+    agency_category = agency.category.x,
+    agency_type = agency.type.x,
+    reporting_status = reporting.status.x,
+    total_requests = total.requests..open...received.,
+    reqs_closed_within_5_days = requests.closed.within.5.days,
+    reqs_fulfilled_electronically = requests.fulfilled.electronically,
+    reqs_fulfilled_physically = requests.fulfilled.physically,
+    reqs_fulfilled_combination = requests.fulfilled.combination,
+    percent_reqs_fulfilled_electronically = percent.of.requests.fulfilled.electronically,
+    percent_reqs_fulfilled_physically = percent.of.requests.fulfilled.physically,
+    percent_reqs_fulfilled_combination = percent.of.requests.fulfilled.combination,
+    reqs_scanned = requests.scanned,
+    est_staff_hours_spent = estimated.staff.hours.spent,
+    avg_est_staff_hours_spent = average.estimated.staff.hours.spent..no.rounding.,
+    est_total_cost_responding_to_reqs = total.cost.estimated,
+    avg_est_cost_responding_per_req = average.estimated.cost.per.request,
+    total_litigation_cost = total.litigation.cost,
+    man_staff_cost = staff.costs,
+    man_system_cost = system.costs,
+    man_service_cost = service.costs,
+    man_third_party_cost = third.party.costs,
+    man_total_cost = total.estimated.costs,
+    expenses_recovered = expenses.recovered
+  )
 
-
-
+df_2020_ready_to_merge <- df_2020_ready_to_merge %>%
+  select(
+    agency_name,
+    agency_category,
+    agency_type,
+    reporting_status,
+    total_requests,
+    reqs_fulfilled_electronically,
+    reqs_fulfilled_physically,
+    reqs_fulfilled_combination,
+    percent_reqs_fulfilled_electronically,
+    percent_reqs_fulfilled_physically,
+    percent_reqs_fulfilled_combination,
+    reqs_scanned,
+    est_staff_hours_spent,
+    avg_est_staff_hours_spent,
+    est_total_cost_responding_to_reqs,
+    avg_est_cost_responding_per_req,
+    total_litigation_cost,
+    man_staff_cost,
+    man_system_cost,
+    man_service_cost,
+    man_third_party_cost,
+    man_total_cost,
+    expenses_recovered
+  )
+df_2020_ready_to_merge$year <- 2020
+write_csv(df_2020_ready_to_merge, file = "jlarc_2020_ready_to_merge.csv", col_names = TRUE, append = FALSE)
 
 
 

@@ -7,6 +7,13 @@ TODO:
 3. Estimate the cost of FOIA expansion by estimating how much staff would each county need, and then estimating staff salaries
 4. For jlarc 2017 the average_days_actual is Average Days Actual from sheet '5. Avg Time vs Actual Time' idk if this variable is in all the datasets... 
 5. Variables to add to dfs:
+6. is percent_req_closed_within_5_days the percent out of ALL requests (total_requests) or just out of closed requests?
+
+Variables to add:
+
+As well as those mentioned below, it might make sense to add the following to all of them,
+
+
 2017
 reqs_closed_within_5_days
 total_open_reqs
@@ -20,6 +27,10 @@ percent_req_completed_within_5_days,
 average_days_actual,
 
 2019
+percent_req_completed_within_5_days
+average_days_actual
+
+2020
 percent_req_completed_within_5_days
 average_days_actual
 
