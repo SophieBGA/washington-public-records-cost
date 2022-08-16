@@ -2,12 +2,12 @@
 
 TODO:
 
-1. Add in all the data-the more the merrier.
-2. Make a summary sheet - roughly 1, but no more than two pages
-3. Estimate the cost of FOIA expansion by estimating how much staff would each county need, and then estimating staff salaries
-4. For jlarc 2017 the average_days_actual is Average Days Actual from sheet '5. Avg Time vs Actual Time' idk if this variable is in all the datasets... 
-5. Variables to add to dfs:
-6. is percent_req_closed_within_5_days the percent out of ALL requests (total_requests) or just out of closed requests?
+- Make a summary sheet - roughly 1, but no more than two pages
+- Estimate the cost of FOIA expansion by estimating how much staff would each county need, and then estimating staff salaries
+- For jlarc 2017 the average_days_actual is Average Days Actual from sheet '5. Avg Time vs Actual Time' idk if this variable is in all the datasets... 
+- Variables to add to dfs:
+- is percent_req_closed_within_5_days the percent out of ALL requests (total_requests) or just out of closed requests?
+- need to fix NAs in all of the management cost sections - make sure none of them should just be 0 
 
 Variables to add:
 
