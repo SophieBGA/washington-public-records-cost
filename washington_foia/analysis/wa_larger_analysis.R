@@ -138,6 +138,54 @@ df3CountiesCentralized <- df3Counties %>%
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 df3CountiesCentralizedPop <- left_join(df3CountiesCentralized, wa_pop, by = c("county", "year"))
 
+df3CountiesCentralizedPopAbove100k <- df3CountiesCentralizedPop %>%
+  filter(above100k == TRUE) 
+
+min(df3CountiesCentralizedPopAbove100k$population, na.rm = TRUE)
+
+unique(df3CountiesCentralizedPop$above100k)
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+df3CountiesCentralizedPop %>%
+  select(population, above100k) %>%
+  tbl_summary(by = above100k) %>% add_p()
+
+df3CountiesCentralizedPop %>%
+  select(population, above100k) %>%
+  tbl_summary(
+    by = above100k,
+    statistic = list(all_continuous() ~ "{mean} ({sd})",
+                     all_categorical() ~ "{n} / {N} ({p}%)"),
+    digits = all_continuous() ~ 2,
+    missing_text = "(Missing)"
+  ) %>% add_p()
+
+df3CountiesCentralizedPop %>%
+  filter(above100k == FALSE) %>%
+  summarise(population)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+df3CountiesCentralizedPopAbove100k %>%
+  select(
+    total_requests,
+    est_staff_hours_spent,
+    avg_est_staff_hours_spent,
+    est_total_cost_responding_to_reqs,
+    avg_est_cost_responding_per_req,
+    total_litigation_cost,
+    man_staff_cost,
+    man_service_cost,
+    man_third_party_cost,
+    man_total_cost,
+    expenses_recovered,
+    population,
+    req_per_person
+  ) %>%
+  tbl_summary(
+    type = all_continuous() ~ "continuous2",
+    statistic = all_continuous() ~ c("{mean}", "{median} ({p25}, {p75})", "{sd}", "{min}, {max}")
+  )
+  
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ggplot(data = df3CountiesCentralizedPop) +
@@ -151,6 +199,12 @@ ggplot(data = df3CountiesCentralizedPop, mapping = aes(x = population, y = est_t
   geom_smooth(se = FALSE)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+library(foreign)
+plotmeans(total_requests ~ county, data = df3CountiesCentralizedPop)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 lm1 <- lm(df3CountiesCentralizedPop$est_total_cost_responding_to_reqs ~ df3CountiesCentralizedPop$population + df3CountiesCentralizedPop$total_requests + df3CountiesCentralizedPop$above100k)
 summary(lm1)
 
@@ -161,6 +215,36 @@ head(lm2)
 lm3 <- lm(df3CountiesCentralizedPop$est_total_cost_responding_to_reqs ~ lm2$fitted.values)
 summary(lm3)
 
+lm4 <- lm(total_requests ~ population + factor(county), data = df3CountiesCentralizedPop)
+summary(lm4)
+
+lm5 <- lm(log(total_requests) ~ population + I(population^2) + factor(county), data = df3CountiesCentralizedPop)
+summary(lm5)
+head(lm5)
+
+lm6 <- lm(log(total_requests) ~ population, data = df3CountiesCentralizedPop)
+summary(lm6)
+
+lm7 <- lm(log(total_requests) ~ population + factor(county), data = df3CountiesCentralizedPop)
+summary(lm7)
+
+lm8 <- lm(log(total_requests) ~ population + I(population^2), data = df3CountiesCentralizedPop)
+summary(lm8)
+
+lm9 <- lm(log(total_requests) ~ population + factor(county) + factor(year), data = df3CountiesCentralizedPop)
+summary(lm9)
+
+# getting the alpha term, the expected value of exp(mu), to adjust the predictions
+alpha <- mean(exp(lm8$residuals))
+alpha
+
+s2 <- var(lm5$residuals)/(length(lm5$residuals - length(lm5$coefficients)))
+s2
+
+plot(lm9$residuals)
+plot(lm5$residuals)
+plot(lm6$residuals)
+plot(lm8$residuals)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 df3CountiesCentralized <- df3Counties %>%
